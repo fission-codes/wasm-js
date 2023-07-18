@@ -1,0 +1,3 @@
+name = "workerd"
+main = "src/index.js"
+compatibility_date = "2023-07-18"

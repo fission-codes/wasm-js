@@ -5,6 +5,11 @@
     "lib": ["ESNext", "DOM"],
     "emitDeclarationOnly": true
   },
-  "include": ["src", "test", "package.json"],
+  "references": [
+    {
+      "path": "../wasm"
+    }
+  ],
+  "include": ["src", "test", "package.json", "node", "web"],
   "exclude": ["node_modules", "dist", "out"]
 }

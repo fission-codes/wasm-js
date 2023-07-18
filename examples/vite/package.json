@@ -1,0 +1,44 @@
+{
+  "name": "vite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --force",
+    "build": "vite build",
+    "preview": "vite build && vite preview",
+    "lint": "tsc && eslint '**/*.{js,jsx,ts}' && prettier --check '**/*.{js,jsx,ts,yml,json}' --ignore-path ../../.gitignore",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@acab/reset.css": "^0.5.3",
+    "@preact/signals": "^1.1.5",
+    "preact": "^10.16.0",
+    "preact-router": "^4.1.1",
+    "react-hook-form": "^7.45.2",
+    "vite-plugin-wasm": "^3.2.2",
+    "wasm": "workspace:^",
+    "water.css": "^2.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@playwright/test": "^1.36.1",
+    "@preact/preset-vite": "^2.5.0",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "../../node_modules/hd-scripts/eslint/preact.js"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "ignorePatterns": [
+      "dist"
+    ]
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
