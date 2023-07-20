@@ -30,12 +30,154 @@
     "dist"
   ],
   "scripts": {
-    "target": "rimraf dist/$TARGET && pnpm run compile && pnpm run bindgen && pnpm run opt",
-    "compile": "cargo build --target wasm32-unknown-unknown --profile release",
-    "bindgen": "wasm-bindgen --weak-refs --target $TARGET --out-dir dist/$TARGET target/wasm32-unknown-unknown/release/wasm.wasm",
-    "opt": "wasm-opt -O4 dist/$TARGET/wasm_bg.wasm -o dist/$TARGET/wasm_bg.wasm",
-    "build": "cross-env TARGET=nodejs pnpm run target && move-file dist/nodejs/wasm.js dist/nodejs/wasm.cjs && cross-env TARGET=web pnpm run target && cpy --flat src/workerd.js dist/web && cross-env TARGET=bundler pnpm run target",
-    "test": "pw-test --mode node && pw-test"
+    "build": "export PROFILE=dev && export TARGET_DIR=debug && pnpm run build:all",
+    "release": "export PROFILE=release && export TARGET_DIR=release && pnpm run build:all",
+    "build:all": "wireit",
+    "clean": "wireit",
+    "test": "wireit",
+    "test:node": "wireit"
+  },
+  "wireit": {
+    "compile": {
+      "command": "cargo build --target wasm32-unknown-unknown --profile $PROFILE",
+      "env": {
+        "PROFILE": {
+          "external": true
+        }
+      }
+    },
+    "opt": {
+      "command": "wasm-opt -O4 target/wasm32-unknown-unknown/$TARGET_DIR/wasm.wasm -o target/wasm32-unknown-unknown/$TARGET_DIR/wasm.wasm",
+      "env": {
+        "TARGET_DIR": {
+          "external": true
+        }
+      },
+      "dependencies": [
+        "compile"
+      ]
+    },
+    "bindgen:bundler": {
+      "command": "wasm-bindgen --weak-refs --target bundler --out-dir dist/bundler target/wasm32-unknown-unknown/$TARGET_DIR/wasm.wasm",
+      "env": {
+        "TARGET_DIR": {
+          "external": true
+        }
+      },
+      "dependencies": [
+        "opt"
+      ],
+      "output": [
+        "dist/bundler"
+      ]
+    },
+    "bindgen:nodejs": {
+      "command": "wasm-bindgen --weak-refs --target nodejs --out-dir dist/nodejs target/wasm32-unknown-unknown/$TARGET_DIR/wasm.wasm && move-file dist/nodejs/wasm.js dist/nodejs/wasm.cjs",
+      "env": {
+        "TARGET_DIR": {
+          "external": true
+        }
+      },
+      "dependencies": [
+        "opt"
+      ],
+      "output": [
+        "dist/nodejs"
+      ]
+    },
+    "bindgen:web": {
+      "command": "wasm-bindgen --weak-refs --target web --out-dir dist/web target/wasm32-unknown-unknown/$TARGET_DIR/wasm.wasm && cpy --flat src/workerd.js dist/web",
+      "env": {
+        "TARGET_DIR": {
+          "external": true
+        }
+      },
+      "dependencies": [
+        "opt"
+      ],
+      "output": [
+        "dist/web"
+      ]
+    },
+    "build:all": {
+      "dependencies": [
+        "bindgen:bundler",
+        "bindgen:nodejs",
+        "bindgen:web"
+      ]
+    },
+    "clean": {
+      "command": "rimraf dist"
+    },
+    "test:prepare": {
+      "command": "npx playwright install && cross-env mkdir test/report",
+      "output": [
+        "test/report"
+      ]
+    },
+    "test:chromium": {
+      "command": "pw-test test/wasm.test.js -r mocha --reporter json --cov > test/report/chromium.json",
+      "dependencies": [
+        "build",
+        "test:prepare"
+      ],
+      "output": [
+        "test/report/chromium.json"
+      ]
+    },
+    "test:firefox": {
+      "command": "pw-test test/wasm.test.js -r mocha --reporter json --browser firefox > test/report/firefox.json",
+      "dependencies": [
+        "build",
+        "test:prepare"
+      ],
+      "output": [
+        "test/report/firefox.json"
+      ]
+    },
+    "test:webkit": {
+      "command": "pw-test test/wasm.test.js -r mocha --reporter json --browser webkit > test/report/webkit.json",
+      "dependencies": [
+        "build",
+        "test:prepare"
+      ],
+      "output": [
+        "test/report/webkit.json"
+      ]
+    },
+    "test:browser": {
+      "dependencies": [
+        "test:chromium",
+        "test:firefox",
+        "test:webkit"
+      ]
+    },
+    "test:node": {
+      "command": "pw-test test/wasm.test.js -r mocha --reporter json --mode node > test/report/node.json",
+      "dependencies": [
+        "build",
+        "test:prepare"
+      ],
+      "output": [
+        "test/report/node.json"
+      ]
+    },
+    "test:report": {
+      "command": "nyc report --reporter=json-summary --report-dir test/report",
+      "dependencies": [
+        "test:chromium"
+      ],
+      "output": [
+        "test/report/coverage-summary.json"
+      ]
+    },
+    "test": {
+      "dependencies": [
+        "test:browser",
+        "test:node",
+        "test:report"
+      ]
+    }
   },
   "keywords": [],
   "author": "",
@@ -48,9 +190,11 @@
     "cross-env": "^7.0.3",
     "mocha": "^10.2.0",
     "move-file-cli": "^3.0.0",
+    "nyc": "^15.1.0",
     "playwright-test": "^12.1.1",
     "rimraf": "^5.0.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "wireit": "^0.10.0"
   },
   "eslintConfig": {
     "extends": [

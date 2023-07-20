@@ -27,3 +27,6 @@ kv-data
 *.sw?
 target
 Cargo.lock
+.wireit
+.nyc_output
+**/test/report
