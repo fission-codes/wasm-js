@@ -193,6 +193,7 @@
     "nyc": "^15.1.0",
     "playwright-test": "^12.1.1",
     "rimraf": "^5.0.1",
+    "to-esm": "^2.27.3",
     "typescript": "^5.1.6",
     "wireit": "^0.10.0"
   },
