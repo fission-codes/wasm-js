@@ -1,11 +1,11 @@
 {
-  "name": "wasm-test",
+  "name": "wasm-commonjs",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "mocha && playwright-test"
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +15,6 @@
     "@types/mocha": "^10.0.1",
     "assert": "^2.0.0",
     "mocha": "^10.2.0",
-    "playwright-test": "^12.1.1",
     "typescript": "^5.1.6"
   },
   "dependencies": {
@@ -26,7 +25,11 @@
       "../../node_modules/hd-scripts/eslint/index.js"
     ],
     "parserOptions": {
+      "sourceType": "script",
       "project": "./tsconfig.json"
+    },
+    "rules": {
+      "unicorn/prefer-module": "off"
     },
     "env": {
       "mocha": true
