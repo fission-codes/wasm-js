@@ -11,21 +11,21 @@
     "test": "playwright test"
   },
   "dependencies": {
-    "@acab/reset.css": "^0.5.3",
-    "@preact/signals": "^1.1.5",
-    "preact": "^10.16.0",
-    "preact-router": "^4.1.1",
-    "react-hook-form": "^7.45.2",
+    "@acab/reset.css": "^0.6.0",
+    "@preact/signals": "^1.2.1",
+    "preact": "^10.17.1",
+    "preact-router": "^4.1.2",
+    "react-hook-form": "^7.45.4",
     "vite-plugin-wasm": "^3.2.2",
     "wasm": "workspace:^",
     "water.css": "^2.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.9",
-    "@playwright/test": "^1.36.1",
+    "@babel/core": "^7.22.11",
+    "@playwright/test": "^1.37.1",
     "@preact/preset-vite": "^2.5.0",
     "typescript": "^5.1.6",
-    "vite": "^4.4.4"
+    "vite": "^4.4.9"
   },
   "eslintConfig": {
     "extends": [

@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "dist/nodejs/wasm.cjs",
   "module": "dist/bundler/wasm.js",
   "types": "dist/nodejs/wasm.d.ts",
   "exports": {
     ".": {
       "workerd": "./dist/web/workerd.js",
+      "browser": "./dist/bundler/wasm.js",
       "node": "./dist/nodejs/wasm.cjs",
       "default": "./dist/bundler/wasm.js",
       "types": "./dist/nodejs/wasm.d.ts"
@@ -99,11 +99,26 @@
         "dist/web"
       ]
     },
+    "bindgen:deno": {
+      "command": "wasm-bindgen --weak-refs --target deno --out-dir dist/deno target/wasm32-unknown-unknown/$TARGET_DIR/wasm.wasm",
+      "env": {
+        "TARGET_DIR": {
+          "external": true
+        }
+      },
+      "dependencies": [
+        "opt"
+      ],
+      "output": [
+        "dist/deno"
+      ]
+    },
     "build:all": {
       "dependencies": [
         "bindgen:bundler",
         "bindgen:nodejs",
-        "bindgen:web"
+        "bindgen:web",
+        "bindgen:deno"
       ]
     },
     "clean": {

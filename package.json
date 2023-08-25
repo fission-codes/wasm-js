@@ -15,11 +15,11 @@
     "docs": "typedoc --out docs"
   },
   "devDependencies": {
-    "depcheck": "^1.4.3",
-    "hd-scripts": "^7.0.0",
-    "lint-staged": "^13.2.3",
-    "prettier": "3.0.0",
-    "simple-git-hooks": "^2.8.1",
+    "depcheck": "^1.4.5",
+    "hd-scripts": "^8.0.0",
+    "lint-staged": "^14.0.1",
+    "prettier": "3.0.2",
+    "simple-git-hooks": "^2.9.0",
     "typescript": "5.1.6"
   },
   "simple-git-hooks": {
