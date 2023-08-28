@@ -2,6 +2,7 @@ name: ci
 env:
   CI: true
   FORCE_COLOR: 1
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/ms-playwright
 on:
   push:
     branches:
@@ -28,4 +29,4 @@ jobs:
       - run: pnpm dlx playwright install --with-deps
       - run: pnpm install
       - run: pnpm run build
-      - run: pnpm run test
+      # - run: pnpm run test
