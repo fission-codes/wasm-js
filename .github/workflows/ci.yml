@@ -22,5 +22,6 @@ jobs:
           node-version: 18
           cache: 'pnpm'
       - run: pnpm install
+      - run: rustup target add wasm32-unknown-unknown
       - run: pnpm run build
       - run: pnpm run test
