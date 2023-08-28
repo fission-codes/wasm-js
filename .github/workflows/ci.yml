@@ -25,7 +25,7 @@ jobs:
         with:
           target: wasm32-unknown-unknown
       - run: cargo install wasm-bindgen-cli wasm-opt
-      - run: pnpm dlx playwright install
+      - run: pnpm dlx playwright install --with-deps
       - run: pnpm install
       - run: pnpm run build
       - run: pnpm run test

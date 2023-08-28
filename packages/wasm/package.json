@@ -131,10 +131,9 @@
       ]
     },
     "test:chromium": {
-      "command": "pw-test test/wasm.test.js -r mocha --reporter json --cov > test/report/chromium.json",
+      "command": "pw-test",
       "dependencies": [
-        "build",
-        "test:prepare"
+        "build"
       ],
       "output": [
         "test/report/chromium.json"
@@ -162,19 +161,13 @@
     },
     "test:browser": {
       "dependencies": [
-        "test:chromium",
-        "test:firefox",
-        "test:webkit"
+        "test:chromium"
       ]
     },
     "test:node": {
-      "command": "pw-test test/wasm.test.js -r mocha --reporter json --mode node > test/report/node.json",
+      "command": "pw-test  --mode node ",
       "dependencies": [
-        "build",
-        "test:prepare"
-      ],
-      "output": [
-        "test/report/node.json"
+        "build"
       ]
     },
     "test:report": {
@@ -189,8 +182,7 @@
     "test": {
       "dependencies": [
         "test:browser",
-        "test:node",
-        "test:report"
+        "test:node"
       ]
     }
   },
