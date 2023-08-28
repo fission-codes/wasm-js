@@ -124,59 +124,16 @@
     "clean": {
       "command": "rimraf dist"
     },
-    "test:prepare": {
-      "command": "npx playwright install && cross-env mkdir test/report",
-      "output": [
-        "test/report"
-      ]
-    },
-    "test:chromium": {
+    "test:browser": {
       "command": "pw-test",
       "dependencies": [
         "build"
-      ],
-      "output": [
-        "test/report/chromium.json"
-      ]
-    },
-    "test:firefox": {
-      "command": "pw-test test/wasm.test.js -r mocha --reporter json --browser firefox > test/report/firefox.json",
-      "dependencies": [
-        "build",
-        "test:prepare"
-      ],
-      "output": [
-        "test/report/firefox.json"
-      ]
-    },
-    "test:webkit": {
-      "command": "pw-test test/wasm.test.js -r mocha --reporter json --browser webkit > test/report/webkit.json",
-      "dependencies": [
-        "build",
-        "test:prepare"
-      ],
-      "output": [
-        "test/report/webkit.json"
-      ]
-    },
-    "test:browser": {
-      "dependencies": [
-        "test:chromium"
       ]
     },
     "test:node": {
       "command": "pw-test  --mode node ",
       "dependencies": [
         "build"
-      ]
-    },
-    "test:report": {
-      "command": "nyc report --reporter=json-summary --report-dir test/report",
-      "dependencies": [
-        "test:chromium"
-      ],
-      "output": [
-        "test/report/coverage-summary.json"
       ]
     },
     "test": {
