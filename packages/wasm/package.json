@@ -124,22 +124,73 @@
     "clean": {
       "command": "rimraf dist"
     },
-    "test:browser": {
-      "command": "pw-test",
+    "test:prepare": {
+      "command": "cross-env mkdir test/report",
+      "output": [
+        "test/report"
+      ]
+    },
+    "test:chromium": {
+      "command": "pw-test test/wasm.test.js -r mocha --reporter json --cov > test/report/chromium.json",
       "dependencies": [
-        "build"
+        "build",
+        "test:prepare"
+      ],
+      "output": [
+        "test/report/chromium.json"
+      ]
+    },
+    "test:firefox": {
+      "command": "pw-test test/wasm.test.js -r mocha --reporter json --browser firefox > test/report/firefox.json",
+      "dependencies": [
+        "build",
+        "test:prepare"
+      ],
+      "output": [
+        "test/report/firefox.json"
+      ]
+    },
+    "test:webkit": {
+      "command": "pw-test test/wasm.test.js -r mocha --reporter json --browser webkit > test/report/webkit.json",
+      "dependencies": [
+        "build",
+        "test:prepare"
+      ],
+      "output": [
+        "test/report/webkit.json"
+      ]
+    },
+    "test:browser": {
+      "dependencies": [
+        "test:chromium",
+        "test:firefox",
+        "test:webkit"
       ]
     },
     "test:node": {
-      "command": "pw-test  --mode node ",
+      "command": "pw-test test/wasm.test.js -r mocha --reporter json --mode node > test/report/node.json",
       "dependencies": [
-        "build"
+        "build",
+        "test:prepare"
+      ],
+      "output": [
+        "test/report/node.json"
+      ]
+    },
+    "test:report": {
+      "command": "nyc report --reporter=json-summary --report-dir test/report",
+      "dependencies": [
+        "test:chromium"
+      ],
+      "output": [
+        "test/report/coverage-summary.json"
       ]
     },
     "test": {
       "dependencies": [
         "test:browser",
-        "test:node"
+        "test:node",
+        "test:report"
       ]
     }
   },
