@@ -1,5 +1,5 @@
 import { unstable_dev } from 'wrangler'
-import { describe, expect, it, beforeAll, afterAll } from 'vitest'
+import assert from 'assert/strict'
 
 describe('Worker', () => {
   /**
@@ -7,13 +7,13 @@ describe('Worker', () => {
    */
   let worker
 
-  beforeAll(async () => {
+  before(async () => {
     worker = await unstable_dev('src/index.js', {
       experimental: { disableExperimentalWarning: true },
     })
   })
 
-  afterAll(async () => {
+  after(async () => {
     await worker.stop()
   })
 
@@ -21,7 +21,7 @@ describe('Worker', () => {
     const resp = await worker.fetch()
     if (resp) {
       const text = await resp.text()
-      expect(text).toMatchInlineSnapshot(`"2"`)
+      assert.equal(text, '2')
     }
   })
 })

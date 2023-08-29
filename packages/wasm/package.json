@@ -125,7 +125,7 @@
       "command": "rimraf dist"
     },
     "test:prepare": {
-      "command": "npx playwright install && cross-env mkdir test/report",
+      "command": "cross-env mkdir test/report",
       "output": [
         "test/report"
       ]
@@ -206,7 +206,7 @@
     "mocha": "^10.2.0",
     "move-file-cli": "^3.0.0",
     "nyc": "^15.1.0",
-    "playwright-test": "^12.1.1",
+    "playwright-test": "^12.1.2",
     "rimraf": "^5.0.1",
     "typescript": "^5.1.6",
     "wireit": "^0.10.0"

@@ -1,0 +1,32 @@
+name: ci
+env:
+  CI: true
+  FORCE_COLOR: 1
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/ms-playwright
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.4.0
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: wasm32-unknown-unknown
+      - run: cargo install wasm-bindgen-cli wasm-opt
+      - run: pnpm dlx playwright install --with-deps
+      - run: pnpm install
+      - run: pnpm run build
+      # - run: pnpm run test

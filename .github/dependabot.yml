@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    open-pull-requests-limit: 5
+    schedule:
+      interval: monthly
+  - package-ecosystem: npm
+    directory: /
+    open-pull-requests-limit: 5
+    schedule:
+      interval: weekly
+  - package-ecosystem: cargo
+    directory: /packages/wasm
+    open-pull-requests-limit: 5
+    schedule:
+      interval: weekly
